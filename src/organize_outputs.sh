@@ -3,17 +3,7 @@
 cd "${outdir}"
 
 mkdir PDF
-mv dwipre-PNC.pdf PDF
-
-
-mkdir PRE_EDDY_NIFTI
-mv dwmri.nii.gz PRE_EDDY_NIFTI
-
-mkdir PRE_EDDY_BVALS
-mv dwmri.bvals PRE_EDDY_BVALS
-
-mkdir PRE_EDDY_BVECS
-mv dwmri.bvecs PRE_EDDY_BVECS
+mv dwipre-NDWR.pdf PDF
 
 
 mkdir EDDY_NIFTI

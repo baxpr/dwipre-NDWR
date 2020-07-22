@@ -31,7 +31,7 @@ fsleyes render -of bet_qc.png --size 2400 2400 \
 convert \
   -size 2600x3365 xc:white \
   -gravity center \( bet_qc.png -resize 2400x \) -geometry +0+0 -composite \
-  -gravity North -pointsize 48 -annotate +0+50 "EDDY preprocess for PNC" \
+  -gravity North -pointsize 48 -annotate +0+50 "EDDY preprocess for NDWR" \
   -gravity SouthEast -pointsize 48 -annotate +50+50 "$(date)" \
   -gravity NorthWest -pointsize 48 -annotate +50+150 "${project} ${subject} ${session}" \
   page1.png
@@ -45,5 +45,5 @@ convert \
   -gravity NorthWest -pointsize 48 -annotate +50+150 "${project} ${subject} ${session}" \
   page2.png
   
-convert page1.png page2.png dwipre-PNC.pdf
+convert page1.png page2.png dwipre-NDWR.pdf
 

@@ -12,18 +12,18 @@ Preprocessing pipeline with FSL 5.0.11 eddy, specific to NDW_ROCKLAND DTI datase
 
 ## Pipeline
 
-1. For the DWI run ("DIFF_137_AP"):
+1. For the DWI series ("DIFF_137_AP"):
 
-    a. A mean b=0 image is computed from all available b=0 volumes.
+    a. A mean b=0 image is computed from all available b=0 volumes, after coregistering them.
     
-    b. BET is used to find a brain mask for the run.
+    b. BET is used to find a brain mask for the series.
     
 4. EDDY is run on the series, using the mask from the previous step.
 
 
 ## Inputs
 
-    --dwi_niigz <dwi.nii.gz>      DWI image set
+    --dwi_niigz <dwi.nii.gz>          DWI image set
     --dwi_bvals <dwi.bvals>
     --dwi_bvecs <dwi.bvecs>
 
