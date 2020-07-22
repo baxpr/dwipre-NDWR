@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PATH=$(pwd):$PATH
+
 pipeline.sh \
     --dwi_niigz ../INPUTS/dwi.nii.gz \
     --dwi_bvals ../INPUTS/dwi.bval \
