@@ -1,7 +1,7 @@
 #!/bin/bash
 
 singularity run \
---cleanenv \
+--cleanenv --contain \
 --bind INPUTS:/INPUTS \
 --bind OUTPUTS:/OUTPUTS \
 baxpr-dwipre-NDWR-master-v1.0.1.simg \
