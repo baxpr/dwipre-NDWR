@@ -4,7 +4,7 @@ singularity run \
 --cleanenv \
 --bind INPUTS:/INPUTS \
 --bind OUTPUTS:/OUTPUTS \
-baxpr-dwipre-NDWR-master-v1.0.0.simg \
+baxpr-dwipre-NDWR-master-v1.0.1.simg \
 --dwi_niigz /INPUTS/dwi.nii.gz \
 --dwi_bvals /INPUTS/dwi.bval \
 --dwi_bvecs /INPUTS/dwi.bvec \
