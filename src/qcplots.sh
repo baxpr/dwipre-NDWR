@@ -14,7 +14,7 @@ fsleyes render -of dti_v1.png --size 2400 1200 \
 
 # TENSORS
 fsleyes render -of dti_tensors.png --size 2400 1200 \
-    -vl 64 65 45 --hidex --hidez -hc -hl -yz 1700 \
+    -vl 54 44 36 --hidex --hidez -hc -hl -yz 1200 \
     dtifit_FA.nii.gz \
     dtifit_tensor.nii.gz -ot tensor
 
