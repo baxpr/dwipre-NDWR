@@ -7,21 +7,26 @@ export bet_opts="-f 0.3 -R"
 # Default acquisition params. Only one line / one entry is accommodated
 export acq_params="0 -1 0 0.05"
 
+# Default threshold to define b=0 images
+export b0_thresh=10
+
 # Parse command line options
 while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
     --dwi_niigz)
-        export dwi_niigz="$2" ; shift; shift;;
+        export dwi_niigz="$2"   ; shift; shift;;
     --dwi_bvals)
-        export dwi_bvals="$2" ; shift; shift;;
+        export dwi_bvals="$2"   ; shift; shift;;
     --dwi_bvecs)
-        export dwi_bvecs="$2" ; shift; shift;;
+        export dwi_bvecs="$2"   ; shift; shift;;
     --bet_opts)
         export bet_opts="$2"    ; shift; shift;;
     --acq_params)
         export acq_params="$2"  ; shift; shift;;
+    --b0_thresh)
+        export b0_thresh="$2"   ; shift; shift;;
     --project)
         export project="$2"     ; shift; shift;;
     --subject)
@@ -44,6 +49,7 @@ echo "       ${dwi_bvecs}"
 echo "outdir: $outdir"
 echo "bet_opts: $bet_opts"
 echo "acq_params: $acq_params"
+echo "b0_thresh: $b0_thresh"
 
 # Run eddy pipeline
 dwipre.sh

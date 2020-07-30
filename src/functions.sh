@@ -2,9 +2,9 @@
 
 function get_nifti_geom {
   
-  nii_file="${1}"
+  local nii_file="${1}"
   
-  vals=
+  local val vals
   for field in dim1 dim2 dim3 sform_xorient sform_yorient sform_zorient ; do
     val=$(fslval "${nii_file}" $field)
     vals="${vals} ${val}"
@@ -18,15 +18,17 @@ function get_nifti_geom {
 
 function find_zero_bvals {
 
-  bval_file="${1}"  # Input bval file
+  local bval_file="${1}"  # Input bval file
+  local thresh="${2}"     # b0 threshold value
 
   # Load bvals from file to array
+  local bvals
   read -a bvals <<< "$(cat ${bval_file})"
 
   # Find 0-based index of volumes with b=0
-  zinds=()
+  local zinds=()
   for i in "${!bvals[@]}"; do
-    if (( $(echo "${bvals[i]} == 0" |bc -l) )) ; then
+    if (( $(echo "${bvals[i]} <= ${thresh}" |bc -l) )) ; then
       zinds+=($i)
     fi
   done
@@ -38,21 +40,23 @@ function find_zero_bvals {
 
 function get_mask_from_b0 {
 
-  dwi_file="${1}"       # Input DWI file
-  bval_file="${2}"      # Matching bvals
-  out_pfx="${3}"        # Prefix for outputs
-                        #    ${out_pfx}.nii.gz        Masked mean b=0
-                        #    ${out_pfx}_mean.nii.gz   Mean b=0
-                        #    ${out_pfx}_mask.nii.gz   Brain mask
+  local dwi_file="${1}"       # Input DWI file
+  local bval_file="${2}"      # Matching bvals
+  local thresh="${3}"         # Threshold for b=0
+  local out_pfx="${4}"        # Prefix for outputs
+                              #    ${out_pfx}.nii.gz        Masked mean b=0
+                              #    ${out_pfx}_mean.nii.gz   Mean b=0
+                              #    ${out_pfx}_mask.nii.gz   Brain mask
   
   # Find the volumes with b=0. FSL and bash both use 0-based indexing
-  read -a zinds <<< "$(find_zero_bvals ${bval_file})"
+  local zinds
+  read -a zinds <<< "$(find_zero_bvals ${bval_file} ${thresh})"
   echo "Found b=0 volumes in ${dwi_file},${bval_file} at ${zinds[@]}"
 
   # Extract the b=0 volumes to temporary files
-  b0_files=()
+  local b0_files=()
   for ind in "${zinds[@]}" ; do
-    thisb0_file=$(printf 'tmp_b0_%04d.nii.gz' ${ind})
+    local thisb0_file=$(printf 'tmp_b0_%04d.nii.gz' ${ind})
     b0_files+=("${thisb0_file}")
     fslroi "${dwi_file}" "${thisb0_file}" $ind 1 
   done
@@ -81,30 +85,6 @@ function get_mask_from_b0 {
 
   # Clean up temp files
   rm -f ${b0_files[@]} tmp_b0.nii.gz
-  
-}
-
-
-function pre_normalize_dwi {
-
-  dwi_file="${1}"    # Input DWI image (will be overwritten with result)
-  bval_file="${2}"   # Matching bvals
-
-  echo "Pre-normalize ${dwi_file}"
-
-  # Get the brain mask from average b=0 image
-  get_mask_from_b0 "${dwi_file}" "${bval_file}" tmp_b0
-
-  # Get mean in-mask intensity
-  brainmean=$(fslstats tmp_b0_mean.nii.gz -k tmp_b0_mask.nii.gz -M)
-  echo "Mean brain intensity: ${brainmean}"
-  
-  # Apply global scaling to the original DWI, overwriting original
-  echo "Applying global scale factor to ${dwi_file}"
-  fslmaths "${dwi_file}" -div ${brainmean} -mul 1000 "${dwi_file}" -odt float
-  
-  # Clean up temp files
-  rm -f tmp_b0*.nii.gz
   
 }
 

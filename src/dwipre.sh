@@ -19,7 +19,7 @@ echo "Using acq_params ${acq_params}"
 printf "${acq_params}\n" > acqparams.txt
 
 ## Brain mask on average b=0 of combined image set
-get_mask_from_b0 dwmri.nii.gz dwmri.bvals b0
+get_mask_from_b0 dwmri.nii.gz dwmri.bvals "${b0_thresh}" b0
 
 ## Index file (one value for each volume of the final combined dwi image set)
 # Assume all volumes had the same acq params, the first entry in acq_params.txt

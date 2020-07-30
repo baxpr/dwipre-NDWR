@@ -29,6 +29,7 @@ Preprocessing pipeline with FSL 5.0.11 eddy, specific to NDW_ROCKLAND DTI datase
 
     --bet_opts "-f 0.3 -R"            BET options (default shown)
     --acq_params "0 -1 0 0.05"        EDDY acq_params (default shown)
+    --b0_thresh 10                    b-values <= this will be set to 0 (default shown)
 
     --project <project_label>         Label information from XNAT
     --subject <subject_label>
